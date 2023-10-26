@@ -1,7 +1,6 @@
 'use client'
-import React,{useState} from 'react'
-import {MdKeyboardVoice} from "react-icons/md"
-import InputEmoji from "react-input-emoji"; 
+import React,{useState, useEffect} from 'react'
+
 import {BiSolidSend} from "react-icons/bi"
 import {db} from "@/config/firebase"
 import { useSelector } from 'react-redux'
@@ -12,9 +11,16 @@ import { useAuth } from "@clerk/nextjs";
 
 export default function ChatInput() {
     const [text, setText] = useState(""); 
+    const [buttonEnabled, setButtonEnabled] = useState(true); 
     const {  userId, sessionId} = useAuth();
     const { isSignedIn, user } = useUser();
-  
+    useEffect(()=> {
+        if(!text || text?.trim().length <= 1) {
+            setButtonEnabled(true)
+        } else {
+            setButtonEnabled(false)
+        }
+            },[text])
     const channelId = useSelector((state)=> state.channelId)
     function sendMessage() {
         db.collection("Channels").doc(channelId).collection("Messages").add({
@@ -40,18 +46,11 @@ export default function ChatInput() {
          })
       }
   return (
-    <div className='flex gap-x-1 w-[96%] mx-auto bg-gray-300 p-2 rounded-md mb-2 items-center'>
+    <div className='flex gap-x-1 min-h-[6vh]  w-[96%] mx-auto bg-gray-300 p-2 rounded-md mb-2 py-2 items-center'>
 
-<InputEmoji 
-      value={text} 
-      onChange={setText} 
-      cleanOnEnter
-     onEnter = {handleOnEnter}
-     keepOpened = {true}
-      placeholder="Type a message"
-    /> 
+<input type="text" className="w-[100%] bg-[transparent] flex-1 outline-0" placeholder='Chat' value = {text} onChange = {(event)=> {setText(event.target.value)}}/>
    
-<BiSolidSend className="text-[1.5rem] cursor-pointer" onClick = {sendMessage}/>
+<button type="button" className={`bg-gray-400 rounded-full p-[5px] ${buttonEnabled ? "opacity-25" : "opacity-100"}`} disabled={buttonEnabled} onClick = {sendMessage}><BiSolidSend className="text-[1.5rem]" /></button>
     </div>
   )
 }
