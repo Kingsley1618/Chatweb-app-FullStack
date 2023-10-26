@@ -5,14 +5,20 @@ import {db} from "@/config/firebase"
 import { useDispatch, useSelector } from 'react-redux'
 import { ChannelActions } from '@/redux/features/chatId/chatSlice'
 import { useCollection } from 'react-firebase-hooks/firestore'
+import { useSideBar } from '@/context/sideBarContext'
 export default function ChannelList() {
     const dispatch = useDispatch()
+    const {closeHandler} = useSideBar()
     const channelId = useSelector((state)=> state.channelId)
     const [channel] = useCollection(db?.collection("Channels").orderBy('timeStamp', 'asc'))
   return (
     <div className={`${styles.channel} flex flex-col select-none gap-y-2  px-3 py-3`}>
 {channel?.docs?.map((doc)=> {
-    return <div key = {doc?.id} className={`${doc.id === channelId? "bg-[black]": null} flex gap-x-3 select-none text-white font-bold py-2 hover:bg-[black]  rounded-md px-2 cursor-pointer`} onClick={()=> {dispatch(ChannelActions.selectId({id:doc.id}))}}>
+    return <div key = {doc?.id} className={`${doc.id === channelId? "bg-[black]": null} flex gap-x-3 select-none text-white font-bold py-2 hover:bg-[black]  rounded-md px-2 cursor-pointer`} onClick={
+      ()=> {dispatch(ChannelActions.selectId({id:doc.id}))
+      closeHandler()
+    }
+      }>
      <h1>#</h1>   <h1 className='select-none'>{doc?.data()?.channelName}</h1>
         </div>
 })}

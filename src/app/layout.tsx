@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import {ModalProvider} from "@/context/modalContext"
 import { ReduxProvider } from '@/reduxProvider'
+import {SideBarProvider} from "@/context/sideBarContext"
 import {AuthProvider} from "@/context/AuthContext"
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,9 +24,11 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
         <ReduxProvider>
+          <SideBarProvider>
        <ModalProvider>
         {children}
         </ModalProvider>
+        </SideBarProvider>
         </ReduxProvider>
         </AuthProvider>
         </body>
