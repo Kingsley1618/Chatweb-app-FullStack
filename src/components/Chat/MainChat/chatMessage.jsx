@@ -1,23 +1,26 @@
-import React,{useEffect} from 'react'
+'use client'
+import React from 'react'
 import {db} from "@/config/firebase"
 import { useSelector } from 'react-redux'
 import { useAuth } from "@clerk/nextjs";
+import { Element } from 'react-scroll';
 import dayjs from 'dayjs';
 import { useUser } from "@clerk/nextjs";
+import { useScrolltoView } from '@/context/scrollContext'
 import {AiOutlineClose} from "react-icons/ai"
 import Image from 'next/image'
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
 export default function ChatMessage() {
   const {  userId, sessionId} = useAuth();
   const { isSignedIn, user } = useUser();
-
+const {lastDiv} = useScrolltoView()
  
   const channelId = useSelector((state)=> state.channelId)
   const [messages] = useCollection(db?.collection("Channels")?.doc(channelId)?.collection("Messages")?.orderBy('timeStamp','asc'))
   function deleteChat(id) {
     db?.collection("Channels")?.doc(channelId)?.collection("Messages")?.doc(id).delete()
    }
-  
+ 
   return (
     <div className='flex-1 flex flex-col gap-y-2 px-3' style={{overflowY:"auto"}}>
       {messages?.docs?.map((message)=> {
@@ -37,6 +40,7 @@ export default function ChatMessage() {
         </div>
           </div>
       })}
+      <div ref = {lastDiv} className='h-[2px]'></div>
     </div>
   )
 }

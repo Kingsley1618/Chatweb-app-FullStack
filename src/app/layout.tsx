@@ -3,6 +3,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import {ModalProvider} from "@/context/modalContext"
+import {ScrollProvider} from "@/context/scrollContext"
 import { ReduxProvider } from '@/reduxProvider'
 import {SideBarProvider} from "@/context/sideBarContext"
 import {AuthProvider} from "@/context/AuthContext"
@@ -24,11 +25,13 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
         <ReduxProvider>
+          <ScrollProvider>
           <SideBarProvider>
        <ModalProvider>
         {children}
         </ModalProvider>
         </SideBarProvider>
+        </ScrollProvider>
         </ReduxProvider>
         </AuthProvider>
         </body>

@@ -5,7 +5,7 @@ import {BiSolidSend} from "react-icons/bi"
 import {db} from "@/config/firebase"
 import { useSelector } from 'react-redux'
 import { useUser } from "@clerk/nextjs";
-
+import { useScrolltoView } from '@/context/scrollContext'
 import firebase from "firebase/compat/app";
 import { useAuth } from "@clerk/nextjs";
 
@@ -13,6 +13,7 @@ export default function ChatInput() {
     const [text, setText] = useState(""); 
     const [buttonEnabled, setButtonEnabled] = useState(true); 
     const {  userId, sessionId} = useAuth();
+    const {scrollHandler} = useScrolltoView()
     const { isSignedIn, user } = useUser();
     useEffect(()=> {
         if(!text || text?.trim().length <= 1) {
@@ -23,28 +24,20 @@ export default function ChatInput() {
             },[text])
     const channelId = useSelector((state)=> state.channelId)
     function sendMessage() {
+        scrollHandler()
         db.collection("Channels").doc(channelId).collection("Messages").add({
            text,
            id: userId,
-           photoUrl : user.imageUrl,
+         photoUrl : user?.imageUrl,
            firstName : user.firstName,
            lastName: user.lastName,
            email: user.emailAddresses[0].emailAddress,
            timeStamp : firebase.firestore.FieldValue.serverTimestamp()
         })
         setText("")
+        
     }
-    function handleOnEnter (text) {
-        db?.collection("Channels")?.doc(channelId)?.collection("Messages").add({
-            text,
-            id: userId,
-            photoUrl : user.imageUrl,
-            firstName : user.firstName,
-            lastName: user.lastName,
-            email: user.emailAddresses[0].emailAddress,
-            timeStamp : firebase.firestore.FieldValue.serverTimestamp()
-         })
-      }
+ 
   return (
     <div className='flex gap-x-1 min-h-[6vh]  w-[96%] mx-auto bg-gray-300 p-2 rounded-md mb-2 py-2 items-center'>
 
