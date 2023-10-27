@@ -39,7 +39,7 @@ export default function ChatInput() {
     }
  
   return (
-    <div className='flex gap-x-1 min-h-[6vh] sm:relative fixed bottom-0 right-0 left-0  w-[96%] mx-auto bg-gray-300 p-2 rounded-md mb-2 py-2 items-center'>
+    <div className='flex gap-x-1 min-h-[6vh] sm:relative fixed bottom-0 right-0 left-0  w-[96%] mx-auto bg-gray-300 p-2 rounded-md py-2 items-center'>
 
 <input type="text" className="w-[100%] bg-[transparent] flex-1 outline-0" placeholder='Chat' value = {text} onChange = {(event)=> {setText(event.target.value)}}/>
    
