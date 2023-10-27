@@ -5,7 +5,7 @@ import {AiOutlineQuestionCircle} from "react-icons/ai"
 import { UserButton } from "@clerk/nextjs";
 export default function Header() {
   return (
-    <div className='flex bg-[rgb(53,13,54)] gap-x-4 min-h-[7vh]  items-center px-3'>
+    <div className='flex bg-[rgb(53,13,54)] gap-x-4 min-h-[7vh] fixed top-0 left-0  items-center px-3'>
         <div className='lg:flex-[.25] flex-[.2] md:flex hidden'></div>
         <div className='flex-[1] flex gap-x-4 items-center ps-2'>
             
