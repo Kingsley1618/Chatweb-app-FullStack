@@ -40,7 +40,7 @@ const {lastDiv} = useScrolltoView()
         </div>
           </div>
       })}
-      <div ref = {lastDiv} className='h-[2px]'></div>
+      <div ref = {lastDiv} className='h-[6vh]'></div>
     </div>
   )
 }
